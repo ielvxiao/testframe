@@ -1,0 +1,12 @@
+.myicon{
+	display: inline-block;
+	vertical-align: middle;
+}
+.myicon-logo{
+	width: 28px;
+	height: 32px;
+	background-image:url(../images/logo.png);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center; 
+}
