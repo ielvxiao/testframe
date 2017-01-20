@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8" />
@@ -10,14 +9,29 @@
     <script src="js/http.js"></script>
 </head>
 <body>
-<p sec:authorize="hasAuthority('admin')">管理员能看</p>
+
+<div sec:authentication="hasAuthority('admin')">
+    This content is only shown to administrators.
+</div>
+<div sec:authentication="hasRole('user')">
+    This content is only shown to users.
+</div>
+
+<p th:text="${currentUser.getAuthorities()}"></p>
+
+<div  th:if="${currentUser.getAuthorities()}=='[admin]'"  >
+    The value of the "name" property of the authentication object should appear here.
+</div>
+<div th:if="${currentUser.getAuthorities()}=='[user]'"  >
+    The value of the "name" property of the authentication object should appear here.
+</div>
 <p th:text="${msg.getTitle()}">sadfafdsa</p>
 <form th:action="@{/logout}" method="post">
     <input type="submit" class="btn btn-primary" value="注销"/>
 </form>
 <script>
     $(function () {
-      //  total();
+       total();
        // setInterval("test()", 10000);
     });
     function total() {

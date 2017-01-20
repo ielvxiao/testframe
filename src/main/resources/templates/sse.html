@@ -14,6 +14,7 @@
         s='';
         source.addEventListener('message', function (e) {
            s+=e.data+"<br/>";
+            console.log(s)
             $("#msg").html(s)
         });
         source.addEventListener('open', function (e) {

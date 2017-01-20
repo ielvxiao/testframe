@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>websocket测试界面</title>
+    <script src="js/sockjs.min.js"></script>
+    <script src="js/stomp.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body onload="disconnected()">
+<noscript><h2>你的浏览器不支持websocket</h2></noscript>
+<div>
+    <div>
+        <button id="connect" onclick="connect()">连接</button>
+        <button id="disconnect" onclick="disconnected()">断开连接</button>
+    </div>
+    <div id="conversationDiv">
+        <label>请输入你的名字</label><input type="text" id="name" />
+        <button id="sendName" onclick="sendName()">发送</button>
+        <p id="response"></p>
+        <select id="selec">
+            <option value="value">10</option>
+        </select>
+    </div>
+</div>
+<script>
+    var stompClient = null;
+    
+    function setConnected(connected) {
+        $('#connect').disabled=connected;
+        $('#disconnect').disabled=!connected;
+    //    $('#conversationDiv').style.visibility=connected ? visible : hidden;
+        $('#response').html();
+    }
+    
+    function connect() {
+        var socket = new SockJS('/endpointWisely');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({},function (frame) {
+            setConnected(true);
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/getResponse', function (response) {
+                showResponse(JSON.parse(response.body));
+            });
+        });
+    }
+    
+    function disconnected() {
+        if (stompClient != null){
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("disconnected")
+    }
+    
+    function sendName() {
+        var name = $('#name').val();
+        var index = $('#selec option:first').text();
+        if (index.undefined){
+            index=10;
+        }
+        stompClient.send("/welcome",{},JSON.stringify({'name':index}));
+    }
+
+    function showResponse(message) {
+//        var response = $('#response');
+//        response.html(message);
+        var mes = [];
+        console.log('==============' +message.total)
+        var rs = message.list;
+        $.each(rs,function (i,n) {
+            mes.push('<option value="'+i+'">其中guid为:' + rs[i].time+ '</option>');
+        });
+        $('#selec').html(mes.join("\n"));
+
+    }
+</script>
+</body>
+</html>

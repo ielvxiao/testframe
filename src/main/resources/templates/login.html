@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
-    <link th:href="@{css/bootstrap.min.css}"  rel="stylesheet"/>
+    <link th:href="@{css/css.css}"  rel="stylesheet"/>
 </head>
 <body>
 <a th:href="@{/}">首页</a>
@@ -11,17 +11,11 @@
 <div id="errorinfo" th:if="${param.error}">
     <font color="red" style="left:2px">无效的用户名密码</font>
 </div>
-<h1>请使用密码登录</h1>
-<form name="form" th:action="@{/login}" method="post">
-    <div class="form-group">
-        <label for="username">账号</label>
-        <input type="text" class="form-control" name="username"/>
-    </div>
-    <div class="form-group">
-        <label for="password">密码</label>
-        <input type="password" class="form-control" name="password"/>
-    </div>
-    <input type="submit" id="login" class="btn btn-primary"/>
+
+<form name="form" th:action="@{/login}" method="post" id="slick-login">
+    <input type="text" name="username"  placeholder="me@tutsplus.com" />
+    <input type="password" name="password" placeholder="password"/>
+    <input type="submit" value="Log In" id="login"/>
 </form>
 </body>
 </html>

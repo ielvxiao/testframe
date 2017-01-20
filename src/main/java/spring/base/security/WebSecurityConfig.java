@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
+import org.thymeleaf.spring4.SpringTemplateEngine;
 import spring.base.custom.CustomUserDetailsService;
 import spring.base.custom.CustomUserService;
 
@@ -30,7 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 //        auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery("select username,password,true" +
 //                " from sys_user where username=?")
 //                .authoritiesByUsernameQuery("SELECT username,name FROM sys_user u LEFT JOIN sys_user_roles ur ON u.id=ur.sys_user_id LEFT JOIN sys_role r ON r.id=ur.roles_id WHERE u.username=?");
-        auth.userDetailsService(userDetailsService);
+//        auth.userDetailsService(userDetailsService);
+        auth.inMemoryAuthentication()
+                .withUser("admin").password("admin").roles("Role_ADMIN");
     }
 
     @Override
@@ -42,6 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                     .loginPage("/login")
                     .failureUrl("/login?error")
                     .permitAll()
+                .and()
+                .rememberMe()
                 .and()
                 .logout().permitAll();
     }

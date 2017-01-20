@@ -3,12 +3,15 @@ package spring.base.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import spring.base.domain.SysUser;
 import spring.base.service.PostService;
 
+import javax.annotation.Resource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.*;
@@ -18,7 +21,7 @@ import java.util.*;
  */
 @Controller
 public class PostControllar {
-    @Autowired
+    @Resource
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -32,6 +35,7 @@ public class PostControllar {
     }
 
     @RequestMapping(value = "/countsql", method = RequestMethod.GET)
+    @PreAuthorize("hasRole('admin')")
     @ResponseBody
     public Object getMysql(){
         return jdbcTemplate.queryForMap("SELECT COUNT(*) AS total FROM netward_used");
